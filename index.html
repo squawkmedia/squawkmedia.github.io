@@ -35,7 +35,7 @@
 </style>
 
 <script>
-    var Server = prompt("Server Address:", "type address here");
+    var Server = prompt("Server URL", "tweeter.jsapp.us");
 
     function getJSON(url) {
         var xhr = new XMLHttpRequest();
@@ -84,6 +84,7 @@
         }));
         console.log(value);
 		refreshMsg();
+		message.value = "";
         return value;
 		
     }
@@ -103,8 +104,6 @@
 		<div class="message">
 			<button class="w3-btn" onclick="refreshMsg()">Refresh Media</button>
 		</div>
-		<br>
-		<br>
         <div class="message">
             <input type="text" class="w3-input" id="message">
             <br>
