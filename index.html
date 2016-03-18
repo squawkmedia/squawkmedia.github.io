@@ -1,12 +1,117 @@
 <!DOCTYPE html>
 <html>
+<title>SquackMedia</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-<body>
 
-<div class="w3-container w3-teal">
-  Squawker
-</div>
+<style>
+    .def-padding {
+        padding: 100px 100px 200px 80px;
+    }
+    
+    .Content {
+        display: flex;
+        height: 80%;
+    }
+    
+    .nav {
+        height: 10%;
+    }
+    
+    .foot {
+        height: 10%;
+    }
+    
+    .center {
+        margin: auto;
+    }
+    
+    .message {
+        padding: 20px 10% 20px;
+        border-radius: 25px;
+        border-style: solid;
+        border-color: gainsboro;
+    }
+</style>
+
+<script>
+    var Server = prompt("Server Address:", "type address here");
+
+    function getJSON(url) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, false);
+        xhr.send();
+        return JSON.parse(xhr.responseText);
+    }
+
+    function genUrl(params) {
+        if (params.action === "read") {
+            return "http://" + Server + "/?action=read";
+        } else {
+            if (params.action === "post") {
+                return "http://" + Server + "/?action=post&message=" + params.message;
+            }
+        }
+    }
+	
+   function refreshMsg() {
+        var msgs = getJSON(genUrl({
+            "action": "read"
+        }));
+        msg = msgs.tweets;
+        console.log(msg);
+		msg.reverse();
+        var output = "";
+        for (var i = 0; i < msg.length; i++) {
+            output += "<br><br><div class='message'>Message: " + msg[i].message + "</div>";
+        }
+		
+        document.getElementById("content").innerHTML = output;
+    }	
+	
+	var timeout;
+	
+	function main() {
+		refreshMsg();
+		timeout = setTimeout(main,1000);
+	}
+	
+    function postMSG() {
+        var message = document.getElementById("message");
+        var value = getJSON(genUrl({
+            "action": "post",
+            "message": message.value
+        }));
+        console.log(value);
+		refreshMsg();
+        return value;
+		
+    }
+
+ 
+</script>
+
+<body class="" onload="main()">
+
+    <div class="w3-container w3-grey nav">
+        <div class="w3-xxlarge">
+            Squack Media
+        </div>
+    </div>
+    <div class="w3-container">
+        <br>
+		<div class="message">
+			<button class="w3-btn" onclick="refreshMsg()">Refresh Media</button>
+		</div>
+        <div class="message">
+            <input type="text" class="w3-input" id="message">
+            <br>
+            <br>
+            <button class="w3-btn" onclick="postMSG()">Post</button>
+        </div>
+        <div class="content" id="content"></div>
+    </div>
 
 </body>
+
 </html>
