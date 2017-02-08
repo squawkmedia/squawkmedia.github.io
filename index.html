@@ -63,7 +63,7 @@
 		msg.reverse();
         var output = "";
         for (var i = 0; i < msg.length; i++) {
-            output += "<br><br><div class='message'>Message: " + msg[i].message + "</div>";
+            output += "<br><br><div class='message'>Message: " + msg[i].message.replace(";","#") + "</div>";
         }
 		
         document.getElementById("content").innerHTML = output;
